@@ -73,41 +73,55 @@ p1+p2+p3+plot_layout(guide = "collect")
 
 # Demographics:
 
-cbp_state %>% 
+p1 <- cbp_state %>% 
   filter(land_border_region != "Other") %>% 
   group_by(land_border_region, citizenship) %>% 
   summarise(encounter_count = sum(encounter_count)) %>% 
   mutate(prop = encounter_count/sum(encounter_count)) %>% 
   ggplot(aes(x = land_border_region, y = prop, fill = citizenship)) + 
   geom_col() +
-  labs(title = "")
+  scale_y_continuous(label = scales::label_percent()) +
+  labs(title = "Variation in arrival location by citizenship",
+       x = "Border",
+       y = "Proportion")
 
 
-cbp_state %>% 
+p2 <- cbp_state %>% 
   filter(land_border_region != "Other") %>% 
   group_by(demographic, citizenship) %>% 
   summarise(encounter_count = sum(encounter_count)) %>% 
   mutate(prop = encounter_count/sum(encounter_count)) %>% 
   ggplot(aes(x = demographic, y = prop, fill = citizenship)) + 
-  geom_col()
+  geom_col() +
+  scale_y_continuous(label = scales::label_percent()) +
+  labs(title = "Variation in demographics by arrivals",
+     x = "Demographic",
+     y = "Proportion")
 
 
-cbp_state %>% 
+p3 <- cbp_state %>% 
   filter(land_border_region != "Other") %>% 
   group_by(title_of_authority, citizenship) %>% 
   summarise(encounter_count = sum(encounter_count)) %>% 
   mutate(prop = encounter_count/sum(encounter_count)) %>% 
   ggplot(aes(x = title_of_authority, y = prop, fill = citizenship)) + 
-  geom_col()
+  geom_col() +
+  scale_y_continuous(label = scales::label_percent()) +
+  labs(title = "Variation of deportation mechanism by citizenship",
+       x = "Removal mechanism",
+       y = "Proportion")
 
-cbp_state %>% 
+p4 <- cbp_state %>% 
   filter(land_border_region != "Other") %>% 
   group_by(title_of_authority, demographic) %>% 
   summarise(encounter_count = sum(encounter_count)) %>% 
   mutate(prop = encounter_count/sum(encounter_count)) %>% 
   ggplot(aes(x = title_of_authority, y = prop, fill = demographic)) + 
-  geom_col()
+  geom_col() +
+  scale_y_continuous(label = scales::label_percent()) +
+  labs(title = "Variation of deportation mechanism by arrival demographic",
+       x = "Removal mechanism",
+       y = "Proportion")
 
+p1+p2+p3+p4
 
-
-~
